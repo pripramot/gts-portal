@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Tracker - ACESO</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .result-box {
+            background: #e8f0fe;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .result-box h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: #666;
+        }
+
+        .info-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .sample-data {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .sample-data h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .sample-data code {
+            background: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="index.html" class="back-btn">
+                ← กลับหน้าหลัก
+            </a>
+            <h1>📍 Location Tracker</h1>
+            <p>ติดตามตำแหน่งจากเบอร์โทรศัพท์</p>
+        </div>
+
+        <div class="card">
+            <div class="sample-data">
+                <h4>💡 ตัวอย่างข้อมูลสำหรับทดสอบ:</h4>
+                <p><strong>เบอร์:</strong> <code>066-442-3732</code></p>
+                <p><strong>ชื่อคดี:</strong> <code>คดีค้นเมทแอมเฟตามีน</code></p>
+                <p><strong>เลขที่:</strong> <code>ที่ 123/2569</code></p>
+            </div>
+
+            <h2 style="margin-bottom: 20px; color: #333;">ค้นหาตำแหน่ง</h2>
+
+            <div class="form-group">
+                <label>เบอร์โทรศัพท์</label>
+                <input type="tel" id="phoneInput" placeholder="เช่น 066-442-3732">
+            </div>
+
+            <div class="form-group">
+                <label>ชื่อคดี</label>
+                <input type="text" id="caseInput" placeholder="เช่น คดีค้นเมทแอมเฟตามีน">
+            </div>
+
+            <div class="form-group">
+                <label>เลขที่หนังสือ</label>
+                <input type="text" id="docInput" placeholder="เช่น ที่ 123/2569">
+            </div>
+
+            <div class="form-group">
+                <label>หมายเหตุ</label>
+                <textarea id="noteInput" rows="3" placeholder="ระบุรายละเอียดเพิ่มเติม (ถ้ามี)"></textarea>
+            </div>
+
+            <button class="btn" onclick="trackLocation()">
+                🔍 ค้นหาตำแหน่ง
+            </button>
+        </div>
+
+        <div id="resultSection" style="display: none;">
+            <div class="card">
+                <h2 style="margin-bottom: 20px; color: #333;">📊 ผลลัพธ์</h2>
+
+                <div class="result-box" id="resultBox"></div>
+
+                <div class="map-container">
+                    <iframe id="mapFrame" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
+                </div>
+
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <button class="btn" onclick="saveToFirebase()">
+                        💾 บันทึกข้อมูล
+                    </button>
+                    <button class="btn btn-secondary" onclick="exportPDF()">
+                        📄 Export PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyD1PqVi5kQgmHZFzFpa9GAnOJfwaMZgVJ4",
+            authDomain: "rungroj-carrent.firebaseapp.com",
+            projectId: "rungroj-carrent",
+            storageBucket: "rungroj-carrent.firebasestorage.app",
+            messagingSenderId: "63868455430",
+            appId: "1:63868455430:web:2eb5e74651c9b887b61187"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.db = db;
+        window.addDoc = addDoc;
+        window.collection = collection;
+        window.serverTimestamp = serverTimestamp;
+    </script>
+
+    <script>
+        let currentResult = null;
+
+        async function trackLocation() {
+            const phone = document.getElementById('phoneInput').value.trim();
+            const caseName = document.getElementById('caseInput').value.trim();
+            const docNum = document.getElementById('docInput').value.trim();
+            const note = document.getElementById('noteInput').value.trim();
+
+            if (!phone || !caseName || !docNum) {
+                alert('กรุณากรอกข้อมูลให้ครบทุกช่อง');
+                return;
+            }
+
+            // Simulate location tracking (ในระบบจริงจะเรียก API จริง)
+            const mockResult = {
+                phone: phone,
+                caseName: caseName,
+                docNumber: docNum,
+                note: note,
+                timestamp: new Date().toLocaleString('th-TH'),
+                position: {
+                    lat: 18.740717,
+                    lng: 99.070290
+                },
+                address: "P3R9+GV5, Ton Pao, San Kamphaeng District, Chiang Mai 50130, Thailand",
+                imsi: "520044725152238",
+                network: "True",
+                networkType: "3G",
+                status: "Idle",
+                locationAge: 0
+            };
+
+            currentResult = mockResult;
+            displayResult(mockResult);
+        }
+
+        function displayResult(data) {
+            const resultBox = document.getElementById('resultBox');
+            resultBox.innerHTML = `
+                <h3>ข้อมูลการติดตาม</h3>
+                <div class="info-row">
+                    <span class="info-label">เบอร์โทร:</span>
+                    <span class="info-value">${data.phone}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">ชื่อคดี:</span>
+                    <span class="info-value">${data.caseName}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">เลขที่หนังสือ:</span>
+                    <span class="info-value">${data.docNumber}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">เวลา:</span>
+                    <span class="info-value">${data.timestamp}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">พิกัด:</span>
+                    <span class="info-value">${data.position.lat}, ${data.position.lng}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">ที่อยู่:</span>
+                    <span class="info-value">${data.address}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">IMSI:</span>
+                    <span class="info-value">${data.imsi}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">ผู้ให้บริการ:</span>
+                    <span class="info-value">${data.network} (${data.networkType})</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">สถานะ:</span>
+                    <span class="info-value">${data.status}</span>
+                </div>
+            `;
+
+            // Update map
+            const mapFrame = document.getElementById('mapFrame');
+            mapFrame.src = `https://www.google.com/maps?q=${data.position.lat},${data.position.lng}&output=embed`;
+
+            // Show result section
+            document.getElementById('resultSection').style.display = 'block';
+
+            // Scroll to result
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function saveToFirebase() {
+            if (!currentResult) return;
+
+            try {
+                await window.addDoc(window.collection(window.db, 'location_tracks'), {
+                    ...currentResult,
+                    savedAt: window.serverTimestamp()
+                });
+
+                alert('✅ บันทึกข้อมูลสำเร็จ!\n\nข้อมูลถูกบันทึกลง Firebase แล้ว');
+            } catch (error) {
+                console.error('Error saving:', error);
+                alert('❌ เกิดข้อผิดพลาดในการบันทึก\n\n' + error.message);
+            }
+        }
+
+        function exportPDF() {
+            alert('📄 Export PDF\n\nกำลังสร้างรายงาน PDF...\n\n(ฟีเจอร์นี้จะพร้อมใช้งานในเร็วๆ นี้)');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบ ACESO Forensic - ป.ป.ส.</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 450px;
+            width: 100%;
+            padding: 40px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            color: #667eea;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #667eea, transparent);
+            margin: 20px 0;
+        }
+
+        #loginForm, #dashboard {
+            display: none;
+        }
+
+        #loginForm.active, #dashboard.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .ai-chat {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .message.ai {
+            background: white;
+            border-left: 4px solid #667eea;
+        }
+
+        .message.user {
+            background: #667eea;
+            color: white;
+            text-align: right;
+        }
+
+        .dashboard-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .dashboard-card h3 {
+            color: #667eea;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .dashboard-card p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .icon {
+            margin-right: 10px;
+            font-size: 24px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .user-info {
+            background: #e8f0fe;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .user-info h4 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .user-info p {
+            color: #666;
+            font-size: 13px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .logo h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Logo -->
+        <div class="logo">
+            <h1>🔍 ACESO Forensic</h1>
+            <p>ระบบงานนิติวิทยาศาสตร์ ป.ป.ส.</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Login Form -->
+        <div id="loginForm" class="active">
+            <h2 style="margin-bottom: 20px; color: #333;">ยืนยันตัวตน</h2>
+
+            <div class="ai-chat" id="chatBox">
+                <div class="message ai">
+                    <strong>🤖 AI Assistant:</strong><br>
+                    สวัสดีครับ ผมเป็น AI ผู้ช่วยของระบบ ป.ป.ส.<br>
+                    กรุณาให้ข้อมูลเพื่อยืนยันตัวตนครับ
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>ชื่อ-นามสกุล</label>
+                <input type="text" id="nameInput" placeholder="เช่น นาย สมชาย ใจดี">
+            </div>
+
+            <div class="form-group">
+                <label>หน่วยงาน</label>
+                <input type="text" id="unitInput" placeholder="เช่น สน.บช.น. ป.ป.ส.ภ.5">
+            </div>
+
+            <div class="form-group">
+                <label>เลขที่หนังสือ/คำสั่ง</label>
+                <input type="text" id="docInput" placeholder="เช่น ที่ 123/2569">
+            </div>
+
+            <button class="btn" onclick="verifyUser()">
+                ยืนยันตัวตน
+            </button>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard">
+            <div class="user-info" id="userInfo"></div>
+
+            <h2 style="margin-bottom: 20px; color: #333;">เมนูหลัก</h2>
+
+            <div class="dashboard-card" onclick="openRemoteACESO()">
+                <h3><span class="icon">🖥️</span> Remote ACESO</h3>
+                <p>เข้าใช้งาน ACESO ผ่าน Remote Desktop</p>
+            </div>
+
+            <div class="dashboard-card" onclick="openLocationTracker()">
+                <h3><span class="icon">📍</span> Location Tracker</h3>
+                <p>ติดตามตำแหน่งจากเบอร์โทรศัพท์</p>
+            </div>
+
+            <div class="dashboard-card" onclick="openReports()">
+                <h3><span class="icon">📄</span> รายงานคดี</h3>
+                <p>ดูรายงานการวิเคราะห์</p>
+            </div>
+
+            <div class="dashboard-card" onclick="openCaseManagement()">
+                <h3><span class="icon">📋</span> จัดการคดี</h3>
+                <p>สร้างและจัดการข้อมูลคดี</p>
+            </div>
+
+            <button class="btn" style="margin-top: 20px; background: #dc3545;" onclick="logout()">
+                ออกจากระบบ
+            </button>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p style="margin-top: 10px; color: #666;">กำลังยืนยันตัวตน...</p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyD1PqVi5kQgmHZFzFpa9GAnOJfwaMZgVJ4",
+            authDomain: "rungroj-carrent.firebaseapp.com",
+            projectId: "rungroj-carrent",
+            storageBucket: "rungroj-carrent.firebasestorage.app",
+            messagingSenderId: "63868455430",
+            appId: "1:63868455430:web:2eb5e74651c9b887b61187"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Make functions global
+        window.db = db;
+        window.addDoc = addDoc;
+        window.collection = collection;
+        window.serverTimestamp = serverTimestamp;
+
+        console.log("✅ Firebase initialized successfully");
+    </script>
+
+    <script>
+        let userData = {};
+
+        async function verifyUser() {
+            const name = document.getElementById('nameInput').value.trim();
+            const unit = document.getElementById('unitInput').value.trim();
+            const doc = document.getElementById('docInput').value.trim();
+
+            if (!name || !unit || !doc) {
+                alert('กรุณากรอกข้อมูลให้ครบทุกช่อง');
+                return;
+            }
+
+            // Show loading
+            document.getElementById('loginForm').classList.remove('active');
+            document.getElementById('loading').style.display = 'block';
+
+            // Simulate AI verification with Gemini
+            await simulateAIVerification(name, unit, doc);
+
+            // Save to Firebase
+            try {
+                await window.addDoc(window.collection(window.db, 'access_logs'), {
+                    name: name,
+                    unit: unit,
+                    document: doc,
+                    timestamp: window.serverTimestamp(),
+                    status: 'SUCCESS',
+                    userAgent: navigator.userAgent
+                });
+                console.log("✅ Log saved to Firebase");
+            } catch (error) {
+                console.error("❌ Error saving log:", error);
+            }
+
+            // Store user data
+            userData = { name, unit, doc };
+            localStorage.setItem('userData', JSON.stringify(userData));
+
+            // Show dashboard
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+                showDashboard();
+            }, 2000);
+        }
+
+        async function simulateAIVerification(name, unit, doc) {
+            const chatBox = document.getElementById('chatBox');
+
+            // AI response
+            const aiMsg = document.createElement('div');
+            aiMsg.className = 'message ai';
+            aiMsg.innerHTML = `
+                <strong>🤖 AI:</strong><br>
+                ขอบคุณครับ ผมได้รับข้อมูลแล้ว<br>
+                <br>
+                ชื่อ: ${name}<br>
+                หน่วย: ${unit}<br>
+                เลขที่: ${doc}<br>
+                <br>
+                กำลังตรวจสอบสิทธิ์...
+            `;
+            chatBox.appendChild(aiMsg);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function showDashboard() {
+            document.getElementById('dashboard').classList.add('active');
+
+            const userInfo = document.getElementById('userInfo');
+            userInfo.innerHTML = `
+                <h4>👤 ${userData.name}</h4>
+                <p>หน่วยงาน: ${userData.unit}</p>
+                <p>เลขที่: ${userData.document}</p>
+                <p>เวลา: ${new Date().toLocaleString('th-TH')}</p>
+            `;
+        }
+
+        function openRemoteACESO() {
+            alert('🖥️ Remote ACESO\n\nกำลังเชื่อมต่อ Remote Desktop...\n\n(ฟีเจอร์นี้จะพร้อมใช้งานหลังติดตั้ง Guacamole)');
+        }
+
+        function openLocationTracker() {
+            window.location.href = 'location-tracker.html';
+        }
+
+        function openReports() {
+            alert('📄 รายงานคดี\n\nแสดงรายงานการวิเคราะห์ทั้งหมด\n\n(ฟีเจอร์กำลังพัฒนา)');
+        }
+
+        function openCaseManagement() {
+            alert('📋 จัดการคดี\n\nสร้างและจัดการข้อมูลคดี\n\n(ฟีเจอร์กำลังพัฒนา)');
+        }
+
+        function logout() {
+            localStorage.removeItem('userData');
+            location.reload();
+        }
+
+        // Check if already logged in
+        window.onload = function() {
+            const stored = localStorage.getItem('userData');
+            if (stored) {
+                userData = JSON.parse(stored);
+                document.getElementById('loginForm').classList.remove('active');
+                showDashboard();
+            }
+        };
+    </script>
+</body>
+</html>

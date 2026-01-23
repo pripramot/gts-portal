@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Drive Uploader - ACESO</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-area:hover {
+            border-color: #764ba2;
+            background: #f8f9fa;
+        }
+
+        .upload-area.drag-over {
+            background: #e8f0fe;
+            border-color: #764ba2;
+        }
+
+        .file-list {
+            margin-top: 20px;
+        }
+
+        .file-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        .drive-link {
+            background: #e8f0fe;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .drive-link.active {
+            display: block;
+        }
+
+        .drive-link h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .drive-link a {
+            color: #667eea;
+            text-decoration: none;
+            word-break: break-all;
+        }
+
+        .drive-link a:hover {
+            text-decoration: underline;
+        }
+
+        .info-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .info-box h4 {
+            color: #856404;
+            margin-bottom: 5px;
+        }
+
+        .info-box p {
+            color: #856404;
+            margin: 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📤 Google Drive Uploader</h1>
+        <p>อัปโหลดไฟล์ไปยัง Google Drive (200 GB)</p>
+
+        <div class="info-box">
+            <h4>💡 วิธีใช้งาน:</h4>
+            <p>1. คลิกปุ่ม "เชื่อมต่อ Google Drive" ครั้งแรก</p>
+            <p>2. อนุญาตการเข้าถึง</p>
+            <p>3. ลาก-วาง หรือเลือกไฟล์ที่ต้องการอัปโหลด</p>
+        </div>
+
+        <button class="btn" onclick="authenticateGoogleDrive()" id="authBtn">
+            🔗 เชื่อมต่อ Google Drive
+        </button>
+
+        <div id="uploadSection" style="display: none; margin-top: 20px;">
+            <div class="upload-area" id="uploadArea">
+                <h2 style="color: #667eea;">📁</h2>
+                <p style="margin: 10px 0;">ลากไฟล์มาวางที่นี่</p>
+                <p style="font-size: 14px;">หรือคลิกเพื่อเลือกไฟล์</p>
+                <input type="file" id="fileInput" multiple style="display: none;">
+            </div>
+
+            <div class="file-list" id="fileList"></div>
+
+            <button class="btn" onclick="uploadFiles()" id="uploadBtn" style="margin-top: 20px; display: none;">
+                ⬆️ เริ่มอัปโหลด
+            </button>
+
+            <div class="progress-bar" id="progressBar" style="display: none;">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="status" id="status"></div>
+
+            <div class="drive-link" id="driveLink">
+                <h3>✅ อัปโหลดสำเร็จ!</h3>
+                <p>ดูไฟล์ได้ที่:</p>
+                <a href="#" id="linkUrl" target="_blank"></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedFiles = [];
+
+        function authenticateGoogleDrive() {
+            // Simulate authentication
+            alert('🔗 Google Drive Authentication\n\n' +
+                  'ในระบบจริง:\n' +
+                  '1. จะเปิดหน้า Google OAuth\n' +
+                  '2. ขออนุญาตเข้าถึง Drive\n' +
+                  '3. รับ Access Token\n\n' +
+                  'สำหรับ Demo นี้ เราจะข้ามขั้นตอนนี้');
+
+            document.getElementById('authBtn').style.display = 'none';
+            document.getElementById('uploadSection').style.display = 'block';
+        }
+
+        // Drag and Drop
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('drag-over');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('drag-over');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            selectedFiles = Array.from(files);
+            displayFiles();
+        }
+
+        function displayFiles() {
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = '';
+
+            selectedFiles.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div>
+                        <strong>${file.name}</strong>
+                        <span style="color: #666; font-size: 14px; margin-left: 10px;">
+                            (${formatFileSize(file.size)})
+                        </span>
+                    </div>
+                    <button onclick="removeFile(${index})" style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
+                        ✕
+                    </button>
+                `;
+                fileList.appendChild(fileItem);
+            });
+
+            document.getElementById('uploadBtn').style.display = selectedFiles.length > 0 ? 'block' : 'none';
+        }
+
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            displayFiles();
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        async function uploadFiles() {
+            if (selectedFiles.length === 0) return;
+
+            // Show progress
+            document.getElementById('progressBar').style.display = 'block';
+            document.getElementById('uploadBtn').disabled = true;
+
+            // Simulate upload
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                document.getElementById('progressFill').style.width = progress + '%';
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    onUploadComplete();
+                }
+            }, 300);
+        }
+
+        function onUploadComplete() {
+            document.getElementById('progressBar').style.display = 'none';
+            document.getElementById('uploadBtn').disabled = false;
+
+            // Show success
+            const status = document.getElementById('status');
+            status.className = 'status success';
+            status.innerHTML = `
+                <strong>✅ อัปโหลดสำเร็จ!</strong><br>
+                อัปโหลด ${selectedFiles.length} ไฟล์ ไปยัง Google Drive แล้ว
+            `;
+
+            // Show link
+            const driveLink = document.getElementById('driveLink');
+            driveLink.classList.add('active');
+
+            const linkUrl = document.getElementById('linkUrl');
+            linkUrl.href = 'https://drive.google.com/drive/folders/YOUR_FOLDER_ID';
+            linkUrl.textContent = 'https://drive.google.com/drive/folders/YOUR_FOLDER_ID';
+
+            // Clear files
+            selectedFiles = [];
+            displayFiles();
+        }
+    </script>
+</body>
+</html>
