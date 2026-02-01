@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "aceso-portal": {
+      "command": "node",
+      "args": ["src/mcp-server/index.js"],
+      "cwd": "/home/user/gts-portal",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+  }
+}

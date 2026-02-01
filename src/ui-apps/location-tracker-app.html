@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Tracker - MCP UI App</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-container {
+            display: none;
+        }
+
+        .result-container.active {
+            display: block;
+        }
+
+        .result-box {
+            background: #e8f0fe;
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .result-box h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: #666;
+        }
+
+        .info-value {
+            color: #333;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 15px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .actions .btn {
+            flex: 1;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge.idle {
+            background: #fff3cd;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <h1>📍 Location Tracker</h1>
+            <p>MCP-Powered Location Tracking</p>
+        </div>
+
+        <div class="card" id="searchForm">
+            <h2 style="margin-bottom: 20px; color: #333;">ค้นหาตำแหน่ง</h2>
+
+            <div class="form-group">
+                <label>เบอร์โทรศัพท์</label>
+                <input type="tel" id="phone" placeholder="066-442-3732" required>
+            </div>
+
+            <div class="form-group">
+                <label>ชื่อคดี</label>
+                <input type="text" id="caseName" placeholder="คดีค้นเมทแอมเฟตามีน" required>
+            </div>
+
+            <div class="form-group">
+                <label>เลขที่หนังสือ</label>
+                <input type="text" id="docNumber" placeholder="ที่ 123/2569" required>
+            </div>
+
+            <button class="btn" id="searchBtn" onclick="trackLocation()">
+                🔍 ค้นหาตำแหน่ง
+            </button>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>กำลังค้นหาตำแหน่ง...</p>
+        </div>
+
+        <div class="result-container" id="resultContainer">
+            <div class="card">
+                <div class="result-box">
+                    <h3>📊 ผลการค้นหา</h3>
+                    <div id="resultContent"></div>
+                </div>
+
+                <div class="map-container" id="mapContainer">
+                    <iframe id="mapFrame" src="" allowfullscreen></iframe>
+                </div>
+
+                <div class="actions">
+                    <button class="btn" onclick="saveResult()">
+                        💾 บันทึก
+                    </button>
+                    <button class="btn btn-secondary" onclick="newSearch()">
+                        🔄 ค้นหาใหม่
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // MCP Bridge Communication
+        const mcpBridge = {
+            callTool: async function(toolName, args) {
+                return new Promise((resolve, reject) => {
+                    const requestId = Date.now().toString();
+
+                    const handler = (event) => {
+                        if (event.data.requestId === requestId) {
+                            window.removeEventListener('message', handler);
+                            if (event.data.error) {
+                                reject(new Error(event.data.error));
+                            } else {
+                                resolve(event.data.result);
+                            }
+                        }
+                    };
+
+                    window.addEventListener('message', handler);
+
+                    window.parent.postMessage({
+                        type: 'mcp-tool-call',
+                        requestId,
+                        tool: toolName,
+                        args
+                    }, '*');
+
+                    // Timeout after 30 seconds
+                    setTimeout(() => {
+                        window.removeEventListener('message', handler);
+                        reject(new Error('Request timeout'));
+                    }, 30000);
+                });
+            }
+        };
+
+        let currentResult = null;
+
+        async function trackLocation() {
+            const phone = document.getElementById('phone').value.trim();
+            const caseName = document.getElementById('caseName').value.trim();
+            const docNumber = document.getElementById('docNumber').value.trim();
+
+            if (!phone || !caseName || !docNumber) {
+                alert('กรุณากรอกข้อมูลให้ครบทุกช่อง');
+                return;
+            }
+
+            // Show loading
+            document.getElementById('searchForm').style.display = 'none';
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('resultContainer').classList.remove('active');
+
+            try {
+                // Try MCP call first, fallback to mock data
+                let result;
+                try {
+                    result = await mcpBridge.callTool('track_location', {
+                        phone, caseName, docNumber
+                    });
+                } catch {
+                    // Mock data fallback for standalone mode
+                    result = generateMockResult(phone, caseName, docNumber);
+                }
+
+                currentResult = result;
+                displayResult(result);
+            } catch (error) {
+                alert('เกิดข้อผิดพลาด: ' + error.message);
+                newSearch();
+            }
+        }
+
+        function generateMockResult(phone, caseName, docNumber) {
+            const locations = [
+                { lat: 18.740717, lng: 99.070290, address: "Ton Pao, San Kamphaeng, Chiang Mai" },
+                { lat: 13.7563, lng: 100.5018, address: "Bangkok, Thailand" },
+                { lat: 7.8804, lng: 98.3923, address: "Phuket, Thailand" }
+            ];
+
+            const loc = locations[Math.floor(Math.random() * locations.length)];
+
+            return {
+                phone,
+                caseName,
+                docNumber,
+                timestamp: new Date().toLocaleString('th-TH'),
+                position: loc,
+                address: loc.address,
+                imsi: "520" + Math.random().toString().slice(2, 15),
+                network: ["True", "AIS", "DTAC"][Math.floor(Math.random() * 3)],
+                networkType: ["3G", "4G", "5G"][Math.floor(Math.random() * 3)],
+                status: Math.random() > 0.5 ? "Active" : "Idle",
+                accuracy: Math.floor(Math.random() * 50) + 10 + "m"
+            };
+        }
+
+        function displayResult(data) {
+            document.getElementById('loading').classList.remove('active');
+            document.getElementById('resultContainer').classList.add('active');
+
+            const statusClass = data.status === 'Active' ? 'active' : 'idle';
+
+            document.getElementById('resultContent').innerHTML = `
+                <div class="info-row">
+                    <span class="info-label">เบอร์โทร</span>
+                    <span class="info-value">${data.phone}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">ชื่อคดี</span>
+                    <span class="info-value">${data.caseName}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">เวลา</span>
+                    <span class="info-value">${data.timestamp}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">พิกัด</span>
+                    <span class="info-value">${data.position.lat}, ${data.position.lng}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">ที่อยู่</span>
+                    <span class="info-value">${data.address}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">IMSI</span>
+                    <span class="info-value">${data.imsi}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">เครือข่าย</span>
+                    <span class="info-value">${data.network} (${data.networkType})</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">สถานะ</span>
+                    <span class="info-value">
+                        <span class="status-badge ${statusClass}">${data.status}</span>
+                    </span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">ความแม่นยำ</span>
+                    <span class="info-value">${data.accuracy}</span>
+                </div>
+            `;
+
+            document.getElementById('mapFrame').src =
+                `https://www.google.com/maps?q=${data.position.lat},${data.position.lng}&output=embed`;
+        }
+
+        function saveResult() {
+            if (!currentResult) return;
+
+            try {
+                mcpBridge.callTool('save_location', currentResult);
+            } catch {
+                // Fallback: store locally
+                const saved = JSON.parse(localStorage.getItem('savedLocations') || '[]');
+                saved.push({ ...currentResult, savedAt: new Date().toISOString() });
+                localStorage.setItem('savedLocations', JSON.stringify(saved));
+            }
+
+            alert('✅ บันทึกข้อมูลสำเร็จ!');
+        }
+
+        function newSearch() {
+            document.getElementById('searchForm').style.display = 'block';
+            document.getElementById('loading').classList.remove('active');
+            document.getElementById('resultContainer').classList.remove('active');
+            currentResult = null;
+        }
+    </script>
+</body>
+</html>

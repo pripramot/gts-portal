@@ -252,27 +252,18 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK - Shared Service -->
     <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import {
+            initFirebase,
+            saveLocationTrack
+        } from './src/shared/firebase-service.js';
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyD1PqVi5kQgmHZFzFpa9GAnOJfwaMZgVJ4",
-            authDomain: "rungroj-carrent.firebaseapp.com",
-            projectId: "rungroj-carrent",
-            storageBucket: "rungroj-carrent.firebasestorage.app",
-            messagingSenderId: "63868455430",
-            appId: "1:63868455430:web:2eb5e74651c9b887b61187"
-        };
+        // Initialize Firebase
+        initFirebase();
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        window.db = db;
-        window.addDoc = addDoc;
-        window.collection = collection;
-        window.serverTimestamp = serverTimestamp;
+        // Make functions global
+        window.saveLocationTrack = saveLocationTrack;
     </script>
 
     <script>
@@ -369,11 +360,7 @@
             if (!currentResult) return;
 
             try {
-                await window.addDoc(window.collection(window.db, 'location_tracks'), {
-                    ...currentResult,
-                    savedAt: window.serverTimestamp()
-                });
-
+                await window.saveLocationTrack(currentResult);
                 alert('✅ บันทึกข้อมูลสำเร็จ!\n\nข้อมูลถูกบันทึกลง Firebase แล้ว');
             } catch (error) {
                 console.error('Error saving:', error);

@@ -5,7 +5,15 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**",
-      "README.md"
+      "README.md",
+      "DEPLOY_GUIDE.md",
+      "FINAL_DEPLOY_SUMMARY.txt",
+      "package.json",
+      "package-lock.json",
+      "mcp-config.json",
+      "src/mcp-server/**",
+      "src/shared/config.js",
+      "src/shared/utils.js"
     ],
     "rewrites": [
       {
