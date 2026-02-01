@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACESO Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #1c1c1c;
+            --bg-secondary: #2a2a2a;
+            --bg-tertiary: #3a3a3a;
+            --text-primary: #f8f8f2;
+            --text-secondary: #a0a0a0;
+            --accent-green: #3ecf8e;
+            --accent-purple: #667eea;
+            --accent-blue: #3b82f6;
+            --border-color: #3a3a3a;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-green);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bg-primary);
+            font-size: 18px;
+        }
+
+        .header-nav {
+            margin-left: auto;
+            display: flex;
+            gap: 20px;
+        }
+
+        .header-nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .header-nav a:hover {
+            color: var(--text-primary);
+        }
+
+        .search-box {
+            margin-left: 40px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 300px;
+            padding: 8px 12px 8px 36px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent-green);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 60px;
+            bottom: 0;
+            width: var(--sidebar-width);
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+
+        .sidebar-section {
+            margin-bottom: 25px;
+        }
+
+        .sidebar-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            padding: 0 20px;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 20px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-menu li a:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .sidebar-menu li a.active {
+            background: rgba(62, 207, 142, 0.1);
+            color: var(--accent-green);
+            border-left-color: var(--accent-green);
+        }
+
+        .menu-icon {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main {
+            margin-left: var(--sidebar-width);
+            margin-top: 60px;
+            min-height: calc(100vh - 60px);
+        }
+
+        .content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .content-header {
+            margin-bottom: 40px;
+        }
+
+        .content-header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .content-header p {
+            font-size: 18px;
+            color: var(--text-secondary);
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            border-color: var(--accent-green);
+            transform: translateY(-2px);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(62, 207, 142, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Documentation Sections */
+        .doc-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        .doc-section h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .doc-section h3 {
+            font-size: 18px;
+            margin: 25px 0 15px 0;
+            color: var(--accent-green);
+        }
+
+        .doc-section p {
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+        }
+
+        .doc-section ul, .doc-section ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        .doc-section li {
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        /* Code blocks */
+        .code-block {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 13px;
+            color: var(--accent-green);
+        }
+
+        /* Tables */
+        .doc-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .doc-table th, .doc-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .doc-table th {
+            background: var(--bg-tertiary);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .doc-table td {
+            color: var(--text-secondary);
+        }
+
+        /* Status badges */
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: rgba(62, 207, 142, 0.2);
+            color: var(--accent-green);
+        }
+
+        .badge-warning {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+        }
+
+        .badge-info {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--accent-blue);
+        }
+
+        /* Quick links */
+        .quick-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .quick-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .quick-link:hover {
+            border-color: var(--accent-green);
+            background: rgba(62, 207, 142, 0.1);
+        }
+
+        /* Version selector */
+        .version-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            background: var(--bg-tertiary);
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--accent-green);
+        }
+
+        /* Mobile toggle */
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Page sections (for SPA navigation) */
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .search-box {
+                display: none;
+            }
+
+            .header-nav {
+                display: none;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+        <div class="logo">
+            <div class="logo-icon">A</div>
+            <span>ACESO Docs</span>
+        </div>
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" placeholder="ค้นหาเอกสาร..." id="searchInput" oninput="filterDocs()">
+        </div>
+        <nav class="header-nav">
+            <a href="#" onclick="showPage('home')">หน้าแรก</a>
+            <a href="#" onclick="showPage('guides')">คู่มือ</a>
+            <a href="#" onclick="showPage('api')">API</a>
+            <a href="/" target="_blank">เปิดแอป</a>
+        </nav>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-section">
+            <div class="sidebar-title">เริ่มต้นใช้งาน</div>
+            <ul class="sidebar-menu">
+                <li><a href="#" onclick="showPage('home')" class="active" data-page="home">
+                    <span class="menu-icon">🏠</span> ภาพรวม
+                </a></li>
+                <li><a href="#" onclick="showPage('quickstart')" data-page="quickstart">
+                    <span class="menu-icon">🚀</span> เริ่มต้นอย่างรวดเร็ว
+                </a></li>
+                <li><a href="#" onclick="showPage('installation')" data-page="installation">
+                    <span class="menu-icon">📦</span> การติดตั้ง
+                </a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-title">คู่มือการใช้งาน</div>
+            <ul class="sidebar-menu">
+                <li><a href="#" onclick="showPage('login')" data-page="login">
+                    <span class="menu-icon">🔐</span> การเข้าสู่ระบบ
+                </a></li>
+                <li><a href="#" onclick="showPage('location')" data-page="location">
+                    <span class="menu-icon">📍</span> ติดตามตำแหน่ง
+                </a></li>
+                <li><a href="#" onclick="showPage('upload')" data-page="upload">
+                    <span class="menu-icon">📁</span> อัปโหลดไฟล์
+                </a></li>
+                <li><a href="#" onclick="showPage('reports')" data-page="reports">
+                    <span class="menu-icon">📊</span> รายงาน
+                </a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-title">แพลตฟอร์ม</div>
+            <ul class="sidebar-menu">
+                <li><a href="#" onclick="showPage('android')" data-page="android">
+                    <span class="menu-icon">🤖</span> Android
+                </a></li>
+                <li><a href="#" onclick="showPage('ios')" data-page="ios">
+                    <span class="menu-icon">🍎</span> iOS
+                </a></li>
+                <li><a href="#" onclick="showPage('desktop')" data-page="desktop">
+                    <span class="menu-icon">💻</span> Desktop
+                </a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-title">สำหรับนักพัฒนา</div>
+            <ul class="sidebar-menu">
+                <li><a href="#" onclick="showPage('api')" data-page="api">
+                    <span class="menu-icon">⚡</span> MCP API
+                </a></li>
+                <li><a href="#" onclick="showPage('firebase')" data-page="firebase">
+                    <span class="menu-icon">🔥</span> Firebase
+                </a></li>
+                <li><a href="#" onclick="showPage('architecture')" data-page="architecture">
+                    <span class="menu-icon">🏗️</span> สถาปัตยกรรม
+                </a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-title">อื่นๆ</div>
+            <ul class="sidebar-menu">
+                <li><a href="#" onclick="showPage('faq')" data-page="faq">
+                    <span class="menu-icon">❓</span> คำถามที่พบบ่อย
+                </a></li>
+                <li><a href="#" onclick="showPage('troubleshoot')" data-page="troubleshoot">
+                    <span class="menu-icon">🔧</span> แก้ไขปัญหา
+                </a></li>
+                <li><a href="#" onclick="showPage('changelog')" data-page="changelog">
+                    <span class="menu-icon">📝</span> บันทึกการเปลี่ยนแปลง
+                </a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="content">
+            <!-- Home Page -->
+            <div class="page-section active" id="page-home">
+                <div class="content-header">
+                    <div class="version-badge">
+                        <span>🏷️</span> v1.0.0
+                    </div>
+                    <h1>ACESO Documentation</h1>
+                    <p>คู่มือการใช้งานระบบ ACESO Forensic Portal สำหรับเจ้าหน้าที่ ป.ป.ส.</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card" onclick="showPage('quickstart')">
+                        <div class="card-icon">🚀</div>
+                        <h3>เริ่มต้นใช้งาน</h3>
+                        <p>เรียนรู้วิธีใช้งาน ACESO ภายใน 5 นาที</p>
+                    </div>
+                    <div class="card" onclick="showPage('location')">
+                        <div class="card-icon">📍</div>
+                        <h3>ติดตามตำแหน่ง</h3>
+                        <p>ค้นหาตำแหน่งจากหมายเลขโทรศัพท์</p>
+                    </div>
+                    <div class="card" onclick="showPage('android')">
+                        <div class="card-icon">📱</div>
+                        <h3>มือถือ</h3>
+                        <p>ใช้งานบน Android และ iOS</p>
+                    </div>
+                    <div class="card" onclick="showPage('api')">
+                        <div class="card-icon">⚡</div>
+                        <h3>MCP API</h3>
+                        <p>เอกสาร API สำหรับนักพัฒนา</p>
+                    </div>
+                </div>
+
+                <div class="doc-section">
+                    <h2>📌 ฟีเจอร์หลัก</h2>
+                    <table class="doc-table">
+                        <thead>
+                            <tr>
+                                <th>ฟีเจอร์</th>
+                                <th>คำอธิบาย</th>
+                                <th>สถานะ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>📍 Location Tracker</td>
+                                <td>ติดตามตำแหน่งจากเบอร์โทรศัพท์</td>
+                                <td><span class="badge badge-success">พร้อมใช้งาน</span></td>
+                            </tr>
+                            <tr>
+                                <td>📁 File Upload</td>
+                                <td>อัปโหลดไฟล์คดีไป Google Drive</td>
+                                <td><span class="badge badge-success">พร้อมใช้งาน</span></td>
+                            </tr>
+                            <tr>
+                                <td>🖥️ Remote ACESO</td>
+                                <td>เข้าถึงระบบ ACESO ระยะไกล</td>
+                                <td><span class="badge badge-warning">กำลังพัฒนา</span></td>
+                            </tr>
+                            <tr>
+                                <td>📊 Case Reports</td>
+                                <td>สร้างและดูรายงานคดี</td>
+                                <td><span class="badge badge-warning">กำลังพัฒนา</span></td>
+                            </tr>
+                            <tr>
+                                <td>⚡ MCP Integration</td>
+                                <td>Model Context Protocol API</td>
+                                <td><span class="badge badge-info">Beta</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="doc-section">
+                    <h2>🔗 ลิงก์ด่วน</h2>
+                    <div class="quick-links">
+                        <a href="/" class="quick-link" target="_blank">
+                            🌐 เปิดแอป ACESO
+                        </a>
+                        <a href="ACESO_USER_MANUAL.md" class="quick-link" target="_blank">
+                            📄 ดาวน์โหลดคู่มือ PDF
+                        </a>
+                        <a href="#" class="quick-link" onclick="showPage('faq')">
+                            ❓ คำถามที่พบบ่อย
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quickstart Page -->
+            <div class="page-section" id="page-quickstart">
+                <div class="content-header">
+                    <h1>🚀 เริ่มต้นอย่างรวดเร็ว</h1>
+                    <p>เริ่มใช้งาน ACESO ได้ภายใน 5 นาที</p>
+                </div>
+
+                <div class="doc-section">
+                    <h2>ขั้นตอนที่ 1: เข้าถึงระบบ</h2>
+                    <p>เปิดเบราว์เซอร์และไปที่:</p>
+                    <div class="code-block">
+                        <code>https://rungroj-carrent.web.app</code>
+                    </div>
+                    <p>หรือสแกน QR Code ด้านล่าง</p>
+                </div>
+
+                <div class="doc-section">
+                    <h2>ขั้นตอนที่ 2: เข้าสู่ระบบ</h2>
+                    <p>กรอกข้อมูลต่อไปนี้:</p>
+                    <ol>
+                        <li><strong>ชื่อ-นามสกุล</strong> - ยศและชื่อของคุณ</li>
+                        <li><strong>หน่วยงาน</strong> - หน่วยงานที่สังกัด</li>
+                        <li><strong>เลขที่หนังสือ</strong> - เลขที่หนังสืออนุมัติ</li>
+                    </ol>
+                </div>
+
+                <div class="doc-section">
+                    <h2>ขั้นตอนที่ 3: เลือกฟีเจอร์</h2>
+                    <p>จากหน้า Dashboard เลือกฟีเจอร์ที่ต้องการใช้งาน:</p>
+                    <ul>
+                        <li>📍 <strong>Location Tracker</strong> - ติดตามตำแหน่ง</li>
+                        <li>📁 <strong>File Upload</strong> - อัปโหลดไฟล์</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Location Tracker Page -->
+            <div class="page-section" id="page-location">
+                <div class="content-header">
+                    <h1>📍 ติดตามตำแหน่ง</h1>
+                    <p>ค้นหาตำแหน่งจากหมายเลขโทรศัพท์</p>
+                </div>
+
+                <div class="doc-section">
+                    <h2>วิธีใช้งาน</h2>
+                    <h3>1. เข้าสู่หน้า Location Tracker</h3>
+                    <p>จาก Dashboard กด "📍 Location Tracker" หรือเปิด URL:</p>
+                    <div class="code-block">
+                        <code>/location-tracker.html</code>
+                    </div>
+
+                    <h3>2. กรอกข้อมูล</h3>
+                    <table class="doc-table">
+                        <thead>
+                            <tr>
+                                <th>ช่อง</th>
+                                <th>ตัวอย่าง</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>เบอร์โทรศัพท์</td>
+                                <td>066-442-3732</td>
+                            </tr>
+                            <tr>
+                                <td>ชื่อคดี</td>
+                                <td>คดีค้นเมทแอมเฟตามีน</td>
+                            </tr>
+                            <tr>
+                                <td>เลขที่หนังสือ</td>
+                                <td>ที่ 123/2569</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>3. ดูผลลัพธ์</h3>
+                    <p>ระบบจะแสดง:</p>
+                    <ul>
+                        <li>พิกัด (Latitude, Longitude)</li>
+                        <li>ที่อยู่โดยประมาณ</li>
+                        <li>IMSI และเครือข่าย</li>
+                        <li>แผนที่ Google Maps</li>
+                    </ul>
+
+                    <h3>4. บันทึกข้อมูล</h3>
+                    <p>กดปุ่ม "💾 บันทึก" เพื่อเก็บข้อมูลลง Firebase</p>
+                </div>
+            </div>
+
+            <!-- Android Page -->
+            <div class="page-section" id="page-android">
+                <div class="content-header">
+                    <h1>🤖 การใช้งานบน Android</h1>
+                    <p>คู่มือการใช้งาน ACESO บนอุปกรณ์ Android</p>
+                </div>
+
+                <div class="doc-section">
+                    <h2>ความต้องการของระบบ</h2>
+                    <table class="doc-table">
+                        <thead>
+                            <tr>
+                                <th>รายการ</th>
+                                <th>ความต้องการ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Android</td>
+                                <td>8.0 (Oreo) ขึ้นไป</td>
+                            </tr>
+                            <tr>
+                                <td>RAM</td>
+                                <td>2 GB ขึ้นไป</td>
+                            </tr>
+                            <tr>
+                                <td>เบราว์เซอร์</td>
+                                <td>Chrome (แนะนำ)</td>
+                            </tr>
+                            <tr>
+                                <td>อินเทอร์เน็ต</td>
+                                <td>3G/4G/5G หรือ WiFi</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="doc-section">
+                    <h2>เพิ่มไอคอนบนหน้าจอหลัก</h2>
+                    <ol>
+                        <li>เปิด Chrome</li>
+                        <li>ไปที่ <code>https://rungroj-carrent.web.app</code></li>
+                        <li>แตะเมนู ⋮ (มุมขวาบน)</li>
+                        <li>เลือก "เพิ่มไปยังหน้าจอหลัก"</li>
+                        <li>ตั้งชื่อ "ACESO"</li>
+                        <li>แตะ "เพิ่ม"</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- iOS Page -->
+            <div class="page-section" id="page-ios">
+                <div class="content-header">
+                    <h1>🍎 การใช้งานบน iOS</h1>
+                    <p>คู่มือการใช้งาน ACESO บน iPhone และ iPad</p>
+                </div>
+
+                <div class="doc-section">
+                    <h2>ความต้องการของระบบ</h2>
+                    <table class="doc-table">
+                        <thead>
+                            <tr>
+                                <th>รายการ</th>
+                                <th>ความต้องการ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>iOS</td>
+                                <td>14.0 ขึ้นไป</td>
+                            </tr>
+                            <tr>
+                                <td>อุปกรณ์</td>
+                                <td>iPhone 8 / iPad (2018) ขึ้นไป</td>
+                            </tr>
+                            <tr>
+                                <td>เบราว์เซอร์</td>
+                                <td>Safari (แนะนำ)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="doc-section">
+                    <h2>เพิ่มไอคอนบนหน้าจอโฮม</h2>
+                    <p>⚠️ <strong>สำคัญ:</strong> ต้องใช้ Safari เท่านั้น</p>
+                    <ol>
+                        <li>เปิด Safari</li>
+                        <li>ไปที่ <code>https://rungroj-carrent.web.app</code></li>
+                        <li>แตะไอคอนแชร์ ⬆️ (ด้านล่าง)</li>
+                        <li>เลื่อนลงและแตะ "เพิ่มไปยังหน้าจอโฮม"</li>
+                        <li>ตั้งชื่อ "ACESO"</li>
+                        <li>แตะ "เพิ่ม"</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- API Page -->
+            <div class="page-section" id="page-api">
+                <div class="content-header">
+                    <h1>⚡ MCP API Reference</h1>
+                    <p>Model Context Protocol API สำหรับนักพัฒนา</p>
+                </div>
+
+                <div class="doc-section">
+                    <h2>การติดตั้ง</h2>
+                    <div class="code-block">
+                        <code>npm install @modelcontextprotocol/sdk @modelcontextprotocol/ext-apps</code>
+                    </div>
+                </div>
+
+                <div class="doc-section">
+                    <h2>Tools ที่มี</h2>
+                    <table class="doc-table">
+                        <thead>
+                            <tr>
+                                <th>Tool</th>
+                                <th>คำอธิบาย</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>track_location</code></td>
+                                <td>ติดตามตำแหน่งจากเบอร์โทร</td>
+                            </tr>
+                            <tr>
+                                <td><code>verify_user</code></td>
+                                <td>ยืนยันตัวตนผู้ใช้</td>
+                            </tr>
+                            <tr>
+                                <td><code>create_case</code></td>
+                                <td>สร้างคดีใหม่</td>
+                            </tr>
+                            <tr>
+                                <td><code>get_location_history</code></td>
+                                <td>ดึงประวัติการติดตาม</td>
+                            </tr>
+                            <tr>
+                                <td><code>generate_report</code></td>
+                                <td>สร้างรายงานคดี</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="doc-section">
+                    <h2>ตัวอย่างการใช้งาน</h2>
+                    <div class="code-block">
+<code>{
+  "tool": "track_location",
+  "arguments": {
+    "phone": "066-442-3732",
+    "caseName": "คดีทดสอบ",
+    "docNumber": "ที่ 123/2569"
+  }
+}</code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Page -->
+            <div class="page-section" id="page-faq">
+                <div class="content-header">
+                    <h1>❓ คำถามที่พบบ่อย</h1>
+                    <p>คำตอบสำหรับคำถามที่พบบ่อย</p>
+                </div>
+
+                <div class="doc-section">
+                    <h3>Q: ACESO ใช้งานได้ฟรีหรือไม่?</h3>
+                    <p>A: ใช่ ACESO เป็นระบบภายในสำหรับเจ้าหน้าที่ ไม่มีค่าใช้จ่าย</p>
+
+                    <h3>Q: สามารถใช้งานแบบ Offline ได้หรือไม่?</h3>
+                    <p>A: ไม่ได้ ACESO ต้องการการเชื่อมต่ออินเทอร์เน็ตตลอดเวลา</p>
+
+                    <h3>Q: รองรับเบราว์เซอร์อะไรบ้าง?</h3>
+                    <p>A: Chrome, Safari, Firefox, Edge เวอร์ชันล่าสุด</p>
+
+                    <h3>Q: ข้อมูลตำแหน่งแม่นยำแค่ไหน?</h3>
+                    <p>A: ความแม่นยำอยู่ที่ประมาณ 10-50 เมตร ขึ้นอยู่กับหลายปัจจัย</p>
+                </div>
+            </div>
+
+            <!-- Troubleshoot Page -->
+            <div class="page-section" id="page-troubleshoot">
+                <div class="content-header">
+                    <h1>🔧 แก้ไขปัญหา</h1>
+                    <p>วิธีแก้ไขปัญหาที่พบบ่อย</p>
+                </div>
+
+                <div class="doc-section">
+                    <h3>หน้าจอขาวหรือโหลดไม่ขึ้น</h3>
+                    <ol>
+                        <li>ตรวจสอบการเชื่อมต่ออินเทอร์เน็ต</li>
+                        <li>ล้างแคชเบราว์เซอร์</li>
+                        <li>ลองใช้เบราว์เซอร์อื่น</li>
+                        <li>รีสตาร์ทอุปกรณ์</li>
+                    </ol>
+
+                    <h3>แผนที่ไม่แสดง</h3>
+                    <ol>
+                        <li>ตรวจสอบการเชื่อมต่ออินเทอร์เน็ต</li>
+                        <li>รอสักครู่แล้วลองใหม่</li>
+                        <li>ล้างแคชเบราว์เซอร์</li>
+                    </ol>
+
+                    <h3>ไม่สามารถอัปโหลดไฟล์ได้</h3>
+                    <ol>
+                        <li>ตรวจสอบขนาดไฟล์ (ไม่เกิน 100 MB)</li>
+                        <li>ลองลดจำนวนไฟล์ที่อัปโหลดพร้อมกัน</li>
+                        <li>ใช้ WiFi แทน 4G</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Other pages placeholders -->
+            <div class="page-section" id="page-installation">
+                <div class="content-header">
+                    <h1>📦 การติดตั้ง</h1>
+                    <p>ACESO เป็น Web App ไม่ต้องติดตั้ง เพียงเปิดเว็บไซต์ได้เลย</p>
+                </div>
+                <div class="doc-section">
+                    <h2>URL สำหรับเข้าใช้งาน</h2>
+                    <div class="code-block">
+                        <code>https://rungroj-carrent.web.app</code>
+                    </div>
+                    <p>หรือ</p>
+                    <div class="code-block">
+                        <code>https://rungroj-carrent.firebaseapp.com</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-section" id="page-login">
+                <div class="content-header">
+                    <h1>🔐 การเข้าสู่ระบบ</h1>
+                </div>
+                <div class="doc-section">
+                    <p>กรอกข้อมูล 3 ช่อง:</p>
+                    <ul>
+                        <li><strong>ชื่อ-นามสกุล</strong> - พร้อมยศ</li>
+                        <li><strong>หน่วยงาน</strong> - หน่วยงานที่สังกัด</li>
+                        <li><strong>เลขที่หนังสือ</strong> - เลขที่อนุมัติ</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="page-section" id="page-upload">
+                <div class="content-header">
+                    <h1>📁 อัปโหลดไฟล์</h1>
+                </div>
+                <div class="doc-section">
+                    <h2>วิธีอัปโหลด</h2>
+                    <ol>
+                        <li>ลากไฟล์มาวางในกรอบ หรือคลิกเพื่อเลือกไฟล์</li>
+                        <li>กดปุ่ม "อัปโหลด"</li>
+                        <li>รอจนเสร็จสมบูรณ์</li>
+                    </ol>
+                    <h2>ขีดจำกัด</h2>
+                    <ul>
+                        <li>ขนาดไฟล์สูงสุด: 100 MB ต่อไฟล์</li>
+                        <li>พื้นที่จัดเก็บ: 200 GB</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="page-section" id="page-reports">
+                <div class="content-header">
+                    <h1>📊 รายงาน</h1>
+                    <p><span class="badge badge-warning">กำลังพัฒนา</span></p>
+                </div>
+            </div>
+
+            <div class="page-section" id="page-desktop">
+                <div class="content-header">
+                    <h1>💻 Desktop</h1>
+                </div>
+                <div class="doc-section">
+                    <p>เปิดเว็บไซต์ผ่านเบราว์เซอร์บนคอมพิวเตอร์:</p>
+                    <ul>
+                        <li>Chrome (แนะนำ)</li>
+                        <li>Firefox</li>
+                        <li>Safari (Mac)</li>
+                        <li>Edge</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="page-section" id="page-firebase">
+                <div class="content-header">
+                    <h1>🔥 Firebase</h1>
+                </div>
+                <div class="doc-section">
+                    <h2>Collections</h2>
+                    <ul>
+                        <li><code>access_logs</code> - บันทึกการเข้าใช้งาน</li>
+                        <li><code>location_tracks</code> - ข้อมูลการติดตาม</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="page-section" id="page-architecture">
+                <div class="content-header">
+                    <h1>🏗️ สถาปัตยกรรม</h1>
+                </div>
+                <div class="doc-section">
+                    <h2>Tech Stack</h2>
+                    <ul>
+                        <li><strong>Frontend:</strong> HTML5, CSS3, Vanilla JavaScript</li>
+                        <li><strong>Backend:</strong> Firebase (Firestore, Hosting)</li>
+                        <li><strong>APIs:</strong> Google Maps, MCP</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="page-section" id="page-changelog">
+                <div class="content-header">
+                    <h1>📝 บันทึกการเปลี่ยนแปลง</h1>
+                </div>
+                <div class="doc-section">
+                    <h3>v1.0.0 (กุมภาพันธ์ 2569)</h3>
+                    <ul>
+                        <li>เปิดตัวเวอร์ชันแรก</li>
+                        <li>ระบบ Login และ Dashboard</li>
+                        <li>Location Tracker</li>
+                        <li>Google Drive Uploader</li>
+                        <li>MCP Integration</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page-section').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show selected page
+            const targetPage = document.getElementById('page-' + pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+
+            // Update sidebar active state
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.classList.remove('active');
+                if (link.dataset.page === pageId) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Close sidebar on mobile
+            document.getElementById('sidebar').classList.remove('open');
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        function filterDocs() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            // Simple search - could be enhanced
+            if (query.includes('ตำแหน่ง') || query.includes('location')) {
+                showPage('location');
+            } else if (query.includes('android')) {
+                showPage('android');
+            } else if (query.includes('ios') || query.includes('iphone')) {
+                showPage('ios');
+            } else if (query.includes('api') || query.includes('mcp')) {
+                showPage('api');
+            }
+        }
+
+        // Handle URL hash navigation
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.slice(1);
+            if (hash) showPage(hash);
+        });
+
+        // Check initial hash
+        if (window.location.hash) {
+            showPage(window.location.hash.slice(1));
+        }
+    </script>
+</body>
+</html>
