@@ -298,32 +298,20 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK - Shared Service -->
     <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyD1PqVi5kQgmHZFzFpa9GAnOJfwaMZgVJ4",
-            authDomain: "rungroj-carrent.firebaseapp.com",
-            projectId: "rungroj-carrent",
-            storageBucket: "rungroj-carrent.firebasestorage.app",
-            messagingSenderId: "63868455430",
-            appId: "1:63868455430:web:2eb5e74651c9b887b61187"
-        };
+        import {
+            initFirebase,
+            logAccess,
+            getDb
+        } from './src/shared/firebase-service.js';
 
         // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        initFirebase();
 
-        // Make functions global
-        window.db = db;
-        window.addDoc = addDoc;
-        window.collection = collection;
-        window.serverTimestamp = serverTimestamp;
-
-        console.log("✅ Firebase initialized successfully");
+        // Make functions global for non-module scripts
+        window.logAccess = logAccess;
+        window.getDb = getDb;
     </script>
 
     <script>
@@ -346,23 +334,19 @@
             // Simulate AI verification with Gemini
             await simulateAIVerification(name, unit, doc);
 
-            // Save to Firebase
+            // Save to Firebase using shared service
             try {
-                await window.addDoc(window.collection(window.db, 'access_logs'), {
+                await window.logAccess({
                     name: name,
                     unit: unit,
-                    document: doc,
-                    timestamp: window.serverTimestamp(),
-                    status: 'SUCCESS',
-                    userAgent: navigator.userAgent
+                    document: doc
                 });
-                console.log("✅ Log saved to Firebase");
             } catch (error) {
                 console.error("❌ Error saving log:", error);
             }
 
             // Store user data
-            userData = { name, unit, doc };
+            userData = { name, unit, document: doc };
             localStorage.setItem('userData', JSON.stringify(userData));
 
             // Show dashboard

@@ -1,0 +1,29 @@
+{
+  "name": "gts-portal",
+  "version": "1.0.0",
+  "description": "ACESO Web Portal - Forensic System for Thai Law Enforcement with MCP Integration",
+  "type": "module",
+  "main": "src/mcp-server/index.js",
+  "scripts": {
+    "start": "node src/mcp-server/index.js",
+    "dev": "node --watch src/mcp-server/index.js",
+    "serve": "npx http-server . -p 8080 -c-1",
+    "deploy": "firebase deploy --only hosting"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@modelcontextprotocol/ext-apps": "^0.1.0"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "keywords": [
+    "mcp",
+    "forensic",
+    "firebase",
+    "location-tracker",
+    "aceso"
+  ],
+  "author": "ACESO Team",
+  "license": "MIT"
+}
