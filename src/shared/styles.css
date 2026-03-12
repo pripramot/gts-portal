@@ -1,5 +1,5 @@
 /**
- * ACESO Portal - Shared Styles
+ * Unicorn Portal - Shared Styles
  * Common CSS used across all pages
  */
 
@@ -11,9 +11,9 @@
 }
 
 :root {
-    --primary-color: #667eea;
-    --secondary-color: #764ba2;
-    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --primary-color: #7c3aed;
+    --secondary-color: #db2777;
+    --primary-gradient: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
     --text-primary: #333;
     --text-secondary: #666;
     --bg-light: #f5f7fa;
@@ -114,7 +114,7 @@ input:focus, select:focus, textarea:focus {
 
 .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4);
 }
 
 .btn:active {
