@@ -113,32 +113,6 @@
             transform: translateY(0);
         }
 
-        .ai-chat {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 20px;
-            margin: 20px 0;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .message {
-            margin-bottom: 15px;
-            padding: 12px;
-            border-radius: 8px;
-        }
-
-        .message.ai {
-            background: white;
-            border-left: 4px solid #667eea;
-        }
-
-        .message.user {
-            background: #667eea;
-            color: white;
-            text-align: right;
-        }
-
         .dashboard-card {
             background: #f8f9fa;
             border-radius: 12px;
@@ -232,14 +206,6 @@
         <div id="loginForm" class="active">
             <h2 style="margin-bottom: 20px; color: #333;">ยืนยันตัวตน</h2>
 
-            <div class="ai-chat" id="chatBox">
-                <div class="message ai">
-                    <strong>🤖 AI Assistant:</strong><br>
-                    สวัสดีครับ ผมเป็น AI ผู้ช่วยของระบบ ป.ป.ส.<br>
-                    กรุณาให้ข้อมูลเพื่อยืนยันตัวตนครับ
-                </div>
-            </div>
-
             <div class="form-group">
                 <label>ชื่อ-นามสกุล</label>
                 <input type="text" id="nameInput" placeholder="เช่น นาย สมชาย ใจดี">
@@ -331,9 +297,6 @@
             document.getElementById('loginForm').classList.remove('active');
             document.getElementById('loading').style.display = 'block';
 
-            // Simulate AI verification with Gemini
-            await simulateAIVerification(name, unit, doc);
-
             // Save to Firebase using shared service
             try {
                 await window.logAccess({
@@ -354,26 +317,6 @@
                 document.getElementById('loading').style.display = 'none';
                 showDashboard();
             }, 2000);
-        }
-
-        async function simulateAIVerification(name, unit, doc) {
-            const chatBox = document.getElementById('chatBox');
-
-            // AI response
-            const aiMsg = document.createElement('div');
-            aiMsg.className = 'message ai';
-            aiMsg.innerHTML = `
-                <strong>🤖 AI:</strong><br>
-                ขอบคุณครับ ผมได้รับข้อมูลแล้ว<br>
-                <br>
-                ชื่อ: ${name}<br>
-                หน่วย: ${unit}<br>
-                เลขที่: ${doc}<br>
-                <br>
-                กำลังตรวจสอบสิทธิ์...
-            `;
-            chatBox.appendChild(aiMsg);
-            chatBox.scrollTop = chatBox.scrollHeight;
         }
 
         function showDashboard() {
