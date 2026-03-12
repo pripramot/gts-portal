@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * ACESO MCP Server
- * Model Context Protocol server for ACESO Forensic Portal
+ * Unicorn MCP Server
+ * Model Context Protocol server for Unicorn Portal
  * Provides tools for location tracking, case management, and file operations
  */
 
@@ -345,7 +345,7 @@ function generateMapHtml(lat, lng, phone) {
         body { font-family: 'Segoe UI', sans-serif; }
         .container { padding: 20px; }
         .info-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
             color: white;
             padding: 15px;
             border-radius: 12px;
@@ -406,7 +406,7 @@ function generateLocationTrackerUI() {
             padding: 25px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
-        h2 { color: #667eea; margin-bottom: 20px; }
+        h2 { color: #7c3aed; margin-bottom: 20px; }
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: 500; }
         input {
@@ -416,9 +416,9 @@ function generateLocationTrackerUI() {
             border-radius: 8px;
             font-size: 14px;
         }
-        input:focus { outline: none; border-color: #667eea; }
+        input:focus { outline: none; border-color: #7c3aed; }
         .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
             color: white;
             border: none;
             padding: 12px 24px;
@@ -532,7 +532,7 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
 async function main() {
     const transport = new StdioServerTransport();
     await server.connect(transport);
-    console.error("ACESO MCP Server running on stdio");
+    console.error("Unicorn MCP Server running on stdio");
 }
 
 main().catch(console.error);

@@ -1,5 +1,5 @@
 /**
- * ACESO Portal - Shared Configuration
+ * Unicorn Portal - Shared Configuration
  * Centralized configuration for Firebase and API settings
  */
 
@@ -13,18 +13,19 @@ export const firebaseConfig = {
 };
 
 export const appConfig = {
-    name: "ACESO Forensic",
+    name: "Unicorn",
+    tagline: "อัจฉริยะ · ซื่อสัตย์ · นวัตกรรม",
     version: "1.0.0",
     organization: "ป.ป.ส.",
     theme: {
-        primaryGradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        primaryColor: "#667eea",
-        secondaryColor: "#764ba2"
+        primaryGradient: "linear-gradient(135deg, #7c3aed 0%, #db2777 100%)",
+        primaryColor: "#7c3aed",
+        secondaryColor: "#db2777"
     }
 };
 
 export const mcpConfig = {
-    serverName: "aceso-mcp-server",
+    serverName: "unicorn-mcp-server",
     version: "1.0.0",
     capabilities: {
         tools: true,
