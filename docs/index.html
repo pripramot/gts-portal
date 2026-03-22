@@ -498,6 +498,9 @@
                 <li><a href="#" onclick="showPage('reports')" data-page="reports">
                     <span class="menu-icon">📊</span> รายงาน
                 </a></li>
+                <li><a href="#" onclick="showPage('unicorn')" data-page="unicorn">
+                    <span class="menu-icon">🦄</span> ศักยภาพหลักของ UNICORN
+                </a></li>
             </ul>
         </div>
 
@@ -580,6 +583,11 @@
                         <div class="card-icon">⚡</div>
                         <h3>MCP API</h3>
                         <p>เอกสาร API สำหรับนักพัฒนา</p>
+                    </div>
+                    <div class="card" onclick="showPage('unicorn')">
+                        <div class="card-icon">🦄</div>
+                        <h3>UNICORN</h3>
+                        <p>ศักยภาพหลักของ UNICORN (Core Capabilities)</p>
                     </div>
                 </div>
 
@@ -1058,6 +1066,109 @@
                 </div>
             </div>
 
+            <div class="page-section" id="page-unicorn">
+                <div class="content-header">
+                    <h1>🦄 ศักยภาพหลักของ UNICORN (Core Capabilities)</h1>
+                    <p>ความสามารถและฟีเจอร์หลักของระบบ UNICORN สำหรับเจ้าหน้าที่ ป.ป.ส.</p>
+                </div>
+
+                <div class="doc-section">
+                    <h2>🔍 ภาพรวมของ UNICORN</h2>
+                    <p>UNICORN (Unified Intelligence Collection and Operation Network) คือระบบรวบรวมและประมวลผลข้อมูลข่าวกรองแบบบูรณาการ ออกแบบมาเพื่อสนับสนุนการปฏิบัติงานของเจ้าหน้าที่ ป.ป.ส. ในการสืบสวนและวิเคราะห์คดียาเสพติด</p>
+                </div>
+
+                <div class="doc-section">
+                    <h2>⚡ ศักยภาพหลัก (Core Capabilities)</h2>
+                    <table class="doc-table">
+                        <thead>
+                            <tr>
+                                <th>ความสามารถ</th>
+                                <th>คำอธิบาย</th>
+                                <th>สถานะ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>🗺️ การติดตามตำแหน่ง</td>
+                                <td>ติดตามและวิเคราะห์ตำแหน่งเป้าหมายแบบเรียลไทม์</td>
+                                <td><span class="badge badge-success">พร้อมใช้งาน</span></td>
+                            </tr>
+                            <tr>
+                                <td>🔗 การวิเคราะห์เครือข่าย</td>
+                                <td>แสดงความเชื่อมโยงระหว่างบุคคลและกลุ่มเครือข่ายยาเสพติด</td>
+                                <td><span class="badge badge-success">พร้อมใช้งาน</span></td>
+                            </tr>
+                            <tr>
+                                <td>📞 การวิเคราะห์การสื่อสาร</td>
+                                <td>ตรวจสอบและวิเคราะห์ข้อมูลการติดต่อสื่อสาร</td>
+                                <td><span class="badge badge-success">พร้อมใช้งาน</span></td>
+                            </tr>
+                            <tr>
+                                <td>📁 การจัดการหลักฐาน</td>
+                                <td>รวบรวม จัดเก็บ และเชื่อมโยงหลักฐานในคดี</td>
+                                <td><span class="badge badge-success">พร้อมใช้งาน</span></td>
+                            </tr>
+                            <tr>
+                                <td>🤖 AI วิเคราะห์ข้อมูล</td>
+                                <td>ใช้ปัญญาประดิษฐ์ช่วยวิเคราะห์รูปแบบและแนวโน้มของคดี</td>
+                                <td><span class="badge badge-warning">กำลังพัฒนา</span></td>
+                            </tr>
+                            <tr>
+                                <td>📊 รายงานอัตโนมัติ</td>
+                                <td>สร้างรายงานสรุปคดีและสถิติแบบอัตโนมัติ</td>
+                                <td><span class="badge badge-warning">กำลังพัฒนา</span></td>
+                            </tr>
+                            <tr>
+                                <td>🔐 การรักษาความปลอดภัย</td>
+                                <td>ระบบยืนยันตัวตนหลายชั้นและการเข้ารหัสข้อมูล</td>
+                                <td><span class="badge badge-success">พร้อมใช้งาน</span></td>
+                            </tr>
+                            <tr>
+                                <td>🌐 การบูรณาการระบบ</td>
+                                <td>เชื่อมต่อกับระบบฐานข้อมูลภายในและภายนอกหน่วยงาน</td>
+                                <td><span class="badge badge-info">Beta</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="doc-section">
+                    <h2>🎯 โมดูลหลัก</h2>
+                    <div class="cards-grid">
+                        <div class="card" onclick="showPage('location')">
+                            <div class="card-icon">📍</div>
+                            <h3>Location Intelligence</h3>
+                            <p>วิเคราะห์และติดตามตำแหน่งเป้าหมายผ่านเบอร์โทรศัพท์</p>
+                        </div>
+                        <div class="card" onclick="showPage('reports')">
+                            <div class="card-icon">📊</div>
+                            <h3>Case Management</h3>
+                            <p>จัดการข้อมูลคดีและสร้างรายงานวิเคราะห์</p>
+                        </div>
+                        <div class="card" onclick="showPage('api')">
+                            <div class="card-icon">⚡</div>
+                            <h3>MCP Integration</h3>
+                            <p>เชื่อมต่อผ่าน Model Context Protocol API</p>
+                        </div>
+                        <div class="card" onclick="showPage('upload')">
+                            <div class="card-icon">📁</div>
+                            <h3>Evidence Vault</h3>
+                            <p>เก็บรักษาและจัดการหลักฐานดิจิทัลอย่างปลอดภัย</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="doc-section">
+                    <h2>📋 ข้อกำหนดการใช้งาน</h2>
+                    <ul>
+                        <li>เจ้าหน้าที่ ป.ป.ส. ที่ได้รับอนุญาตเท่านั้น</li>
+                        <li>ต้องมีเลขที่หนังสือ/คำสั่งที่ถูกต้องก่อนเข้าใช้งาน</li>
+                        <li>ข้อมูลทั้งหมดถูกบันทึก Log ทุกครั้งที่มีการเข้าใช้งาน</li>
+                        <li>ห้ามนำข้อมูลไปเปิดเผยต่อบุคคลภายนอกโดยเด็ดขาด</li>
+                    </ul>
+                </div>
+            </div>
+
         </div>
     </main>
 
@@ -1104,6 +1215,8 @@
                 showPage('ios');
             } else if (query.includes('api') || query.includes('mcp')) {
                 showPage('api');
+            } else if (query.includes('unicorn') || query.includes('ศักยภาพ') || query.includes('core capabilities')) {
+                showPage('unicorn');
             }
         }
 
