@@ -543,6 +543,9 @@
                 <li><a href="#" onclick="showPage('changelog')" data-page="changelog">
                     <span class="menu-icon">📝</span> บันทึกการเปลี่ยนแปลง
                 </a></li>
+                <li><a href="#" onclick="showPage('readme')" data-page="readme">
+                    <span class="menu-icon">📖</span> README
+                </a></li>
             </ul>
         </div>
     </aside>
@@ -1055,6 +1058,167 @@
                         <li>Google Drive Uploader</li>
                         <li>MCP Integration</li>
                     </ul>
+                </div>
+            </div>
+
+            <!-- README Section (final page) -->
+            <div class="page-section" id="page-readme">
+                <div class="content-header">
+                    <h1>📖 README — เกี่ยวกับโปรเจกต์</h1>
+                </div>
+
+                <div class="doc-section">
+                    <h2>🌐 ACESO Web Portal</h2>
+                    <p>ระบบ ACESO Forensic แบบ Web สำหรับ ป.ป.ส.</p>
+                </div>
+
+                <div class="doc-section">
+                    <h2>✨ ฟีเจอร์หลัก</h2>
+                    <ul>
+                        <li>✅ ใช้งานผ่าน Browser ได้ทุกแพลตฟอร์ม</li>
+                        <li>✅ รองรับมือถือ (Android + iOS)</li>
+                        <li>✅ AI Chatbot ยืนยันตัวตน (Gemini)</li>
+                        <li>✅ Firebase Backend</li>
+                        <li>✅ ติดตามตำแหน่ง (Location Tracker)</li>
+                        <li>✅ Remote ACESO Access (อยู่ระหว่างพัฒนา)</li>
+                        <li>✅ จัดการคดี (อยู่ระหว่างพัฒนา)</li>
+                    </ul>
+                </div>
+
+                <div class="doc-section">
+                    <h2>📦 โครงสร้างไฟล์</h2>
+                    <pre><code>ACESO_Web/
+├── index.html                 ← หน้าหลัก (Login + Dashboard)
+├── location-tracker.html      ← ติดตามตำแหน่ง
+├── google-drive-uploader.html ← อัปโหลดไฟล์
+├── docs/                      ← เอกสารประกอบ
+├── src/                       ← ซอร์สโค้ด
+│   ├── mcp-server/            ← MCP Server
+│   ├── shared/                ← โมดูลที่ใช้ร่วมกัน
+│   └── ui-apps/               ← แอปพลิเคชัน UI
+└── README.md                  ← คู่มือนี้</code></pre>
+                </div>
+
+                <div class="doc-section">
+                    <h2>🚀 วิธีใช้งาน</h2>
+                    <h3>ทดสอบในเครื่อง</h3>
+                    <p>เปิดไฟล์ <code>index.html</code> ด้วย Browser หรือรันคำสั่ง:</p>
+                    <pre><code>npm install
+npm run serve</code></pre>
+
+                    <h3>Deploy ขึ้น Firebase Hosting (แนะนำ)</h3>
+                    <pre><code>npm install -g firebase-tools
+firebase login
+firebase init hosting
+firebase deploy --only hosting</code></pre>
+                    <p>จะได้ URL: <code>https://rungroj-carrent.web.app</code></p>
+
+                    <h3>Deploy ด้วย GitHub Pages (ฟรี)</h3>
+                    <ol>
+                        <li>สร้าง GitHub Repository</li>
+                        <li>Push โค้ดขึ้น GitHub</li>
+                        <li>ไปที่ Settings → Pages</li>
+                        <li>เลือก Branch: main → Folder: / (root)</li>
+                        <li>Save — จะได้ URL ทันที</li>
+                    </ol>
+
+                    <h3>Deploy ด้วย Netlify (ฟรี ง่ายที่สุด)</h3>
+                    <ol>
+                        <li>ไปที่ <a href="https://netlify.com" target="_blank">netlify.com</a> แล้วสมัคร (ฟรี)</li>
+                        <li>ลากโฟลเดอร์โปรเจกต์วางในหน้าเว็บ</li>
+                        <li>เสร็จ! ได้ URL ทันที</li>
+                    </ol>
+                </div>
+
+                <div class="doc-section">
+                    <h2>📱 การใช้งานบนมือถือ</h2>
+                    <ol>
+                        <li>เปิด Browser บนมือถือ (Chrome / Safari)</li>
+                        <li>ไปที่ URL ของ Web Portal</li>
+                        <li>ล็อกอินด้วยข้อมูลของคุณ</li>
+                        <li>ใช้งานได้เลย เหมือนบน PC ทุกประการ</li>
+                    </ol>
+                </div>
+
+                <div class="doc-section">
+                    <h2>🎯 สิ่งที่ใช้งานได้แล้ว</h2>
+                    <h3>✅ หน้าล็อกอิน</h3>
+                    <ul>
+                        <li>กรอกข้อมูลยืนยันตัวตน</li>
+                        <li>AI Chatbot แสดงการสนทนา</li>
+                        <li>บันทึก Log ลง Firebase</li>
+                    </ul>
+                    <h3>✅ แดชบอร์ด</h3>
+                    <ul>
+                        <li>แสดงข้อมูลผู้ใช้</li>
+                        <li>เมนูหลัก 4 เมนู</li>
+                        <li>ออกจากระบบ</li>
+                    </ul>
+                    <h3>✅ ติดตามตำแหน่ง</h3>
+                    <ul>
+                        <li>กรอกเบอร์โทรศัพท์</li>
+                        <li>แสดงพิกัดบน Google Maps</li>
+                        <li>บันทึกข้อมูลลง Firebase</li>
+                    </ul>
+                    <h3>🔄 อยู่ระหว่างพัฒนา</h3>
+                    <ul>
+                        <li>Remote ACESO Access</li>
+                        <li>จัดการคดี</li>
+                        <li>ดูรายงาน</li>
+                        <li>แอปมือถือ</li>
+                    </ul>
+                </div>
+
+                <div class="doc-section">
+                    <h2>💰 ค่าใช้จ่าย</h2>
+                    <table style="width:100%; border-collapse:collapse;">
+                        <thead>
+                            <tr style="border-bottom:2px solid var(--border-color);">
+                                <th style="text-align:left; padding:8px;">บริการ</th>
+                                <th style="text-align:left; padding:8px;">แผน</th>
+                                <th style="text-align:left; padding:8px;">ราคา/เดือน</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom:1px solid var(--border-color);">
+                                <td style="padding:8px;">Firebase Hosting</td>
+                                <td style="padding:8px;">Spark (Free)</td>
+                                <td style="padding:8px;"><strong>ฟรี!</strong></td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--border-color);">
+                                <td style="padding:8px;">Firebase Firestore</td>
+                                <td style="padding:8px;">Spark (Free)</td>
+                                <td style="padding:8px;"><strong>ฟรี!</strong></td>
+                            </tr>
+                            <tr style="border-bottom:1px solid var(--border-color);">
+                                <td style="padding:8px;">Gemini API</td>
+                                <td style="padding:8px;">Free Tier</td>
+                                <td style="padding:8px;"><strong>ฟรี!</strong></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:8px;"><strong>รวม</strong></td>
+                                <td style="padding:8px;"></td>
+                                <td style="padding:8px;"><strong>0 บาท!</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="doc-section">
+                    <h2>🔒 ความปลอดภัย</h2>
+                    <ul>
+                        <li>✅ Firebase Authentication (พร้อมใช้งาน)</li>
+                        <li>✅ บันทึก Log ทุกการเข้าใช้งาน</li>
+                        <li>✅ ตรวจสอบสิทธิ์ผ่าน AI</li>
+                        <li>✅ HTTPS อัตโนมัติเมื่อ Deploy บน Firebase/Netlify</li>
+                    </ul>
+                </div>
+
+                <div class="doc-section">
+                    <h2>📄 สัญญาอนุญาต</h2>
+                    <p>สร้างโดย: ทีม ACESO</p>
+                    <p>สำหรับ: สำนักงาน ป.ป.ส.</p>
+                    <p>สัญญาอนุญาต: MIT</p>
                 </div>
             </div>
 
